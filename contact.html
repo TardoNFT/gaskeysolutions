@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact — Gaskey Solutions</title>
+<style>@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&family=DM+Serif+Display:ital@0;1&display=swap');
+
+:root {
+  --g900: #0d1a0d;
+  --g800: #162316;
+  --g700: #1e361e;
+  --g600: #2d6a2d;
+  --g500: #3d8c3d;
+  --g400: #5cbf5c;
+  --g300: #8fd98f;
+  --g200: #c2eec2;
+  --g100: #e8f5e8;
+  --g50:  #f4fbf4;
+  --white: #ffffff;
+  --ink:  #0d1a0d;
+  --muted: #607060;
+  --border: rgba(45,106,45,0.15);
+  --shadow: 0 4px 40px rgba(13,26,13,0.12);
+  --shadow-lg: 0 20px 80px rgba(13,26,13,0.18);
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--white);
+  color: var(--ink);
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ── CUSTOM CURSOR ── */
+#cursor {
+  width: 12px; height: 12px;
+  background: var(--g400);
+  border-radius: 50%;
+  position: fixed; top: 0; left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  transition: transform 0.15s ease, width 0.2s, height 0.2s, background 0.2s;
+  transform: translate(-50%,-50%);
+}
+#cursor-ring {
+  width: 36px; height: 36px;
+  border: 1.5px solid var(--g400);
+  border-radius: 50%;
+  position: fixed; top: 0; left: 0;
+  pointer-events: none;
+  z-index: 9998;
+  transition: transform 0.35s ease, width 0.2s, height 0.2s, opacity 0.2s;
+  transform: translate(-50%,-50%);
+  opacity: 0.5;
+}
+body:hover #cursor { opacity: 1; }
+a:hover ~ #cursor, button:hover ~ #cursor { transform: translate(-50%,-50%) scale(2.5); }
+
+/* ── NAV ── */
+#nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+  height: 72px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 56px;
+  transition: background 0.4s, box-shadow 0.4s, border-color 0.4s;
+  border-bottom: 1px solid transparent;
+}
+#nav.scrolled {
+  background: rgba(13,26,13,0.96);
+  backdrop-filter: blur(12px);
+  border-color: rgba(92,191,92,0.12);
+  box-shadow: 0 2px 40px rgba(0,0,0,0.3);
+}
+.nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.nav-logo-text { display: flex; flex-direction: column; }
+.nav-brand {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 24px; letter-spacing: 3px;
+  color: var(--white); line-height: 1;
+}
+.nav-tagline {
+  font-size: 7px; font-weight: 500; letter-spacing: 3.5px;
+  text-transform: uppercase; color: var(--g400); margin-top: 1px;
+}
+.nav-links { display: flex; gap: 8px; list-style: none; align-items: center; }
+.nav-links a {
+  text-decoration: none; font-size: 11px; font-weight: 500;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: rgba(255,255,255,0.65); padding: 8px 16px; border-radius: 3px;
+  transition: color 0.2s, background 0.2s;
+}
+.nav-links a:hover, .nav-links a.active { color: var(--white); background: rgba(92,191,92,0.1); }
+.nav-cta {
+  background: var(--g600) !important; color: var(--white) !important;
+  padding: 10px 24px !important; border-radius: 3px !important;
+  transition: background 0.2s, transform 0.2s !important;
+}
+.nav-cta:hover { background: var(--g500) !important; transform: translateY(-1px) !important; }
+
+/* hamburger */
+.nav-burger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 8px; }
+.nav-burger span { display: block; width: 24px; height: 2px; background: var(--white); border-radius: 2px; transition: all 0.3s; }
+.mobile-menu {
+  display: none; position: fixed; inset: 0; background: var(--g900);
+  z-index: 490; flex-direction: column; align-items: center; justify-content: center; gap: 32px;
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a {
+  font-family: 'Bebas Neue', sans-serif; font-size: 48px; letter-spacing: 4px;
+  color: var(--white); text-decoration: none; transition: color 0.2s;
+}
+.mobile-menu a:hover { color: var(--g400); }
+
+/* ── PAGE TRANSITIONS ── */
+#page-overlay {
+  position: fixed; inset: 0; background: var(--g900);
+  z-index: 800; pointer-events: none;
+  transform: scaleY(0); transform-origin: bottom;
+  transition: transform 0.5s cubic-bezier(0.77,0,0.18,1);
+}
+#page-overlay.covering { transform: scaleY(1); transform-origin: bottom; }
+#page-overlay.revealing { transform: scaleY(0); transform-origin: top; }
+
+/* ── SCROLL REVEAL ── */
+.reveal {
+  opacity: 0; transform: translateY(40px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-left { opacity: 0; transform: translateX(-40px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal-left.visible { opacity: 1; transform: translateX(0); }
+.reveal-right { opacity: 0; transform: translateX(40px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal-right.visible { opacity: 1; transform: translateX(0); }
+
+/* ── FOOTER ── */
+footer {
+  background: var(--g900);
+  padding: 72px 56px 36px;
+  border-top: 1px solid rgba(92,191,92,0.1);
+}
+.footer-grid {
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 56px; margin-bottom: 56px;
+}
+.footer-brand-desc { font-size: 14px; color: rgba(255,255,255,0.4); line-height: 1.8; margin-top: 16px; max-width: 280px; }
+.footer-col h4 {
+  font-size: 9px; font-weight: 700; letter-spacing: 3px;
+  text-transform: uppercase; color: var(--g400); margin-bottom: 20px;
+}
+.footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.footer-col ul a {
+  font-size: 14px; color: rgba(255,255,255,0.45); text-decoration: none;
+  transition: color 0.2s;
+}
+.footer-col ul a:hover { color: var(--white); }
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding-top: 28px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
+}
+.footer-copy { font-size: 12px; color: rgba(255,255,255,0.25); letter-spacing: 0.5px; }
+.footer-email { font-size: 12px; color: var(--g400); text-decoration: none; letter-spacing: 0.5px; }
+.footer-email:hover { color: var(--g300); }
+
+/* ── BUTTONS ── */
+.btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 16px 36px; border-radius: 3px;
+  font-size: 11px; font-weight: 600; letter-spacing: 2px;
+  text-transform: uppercase; text-decoration: none;
+  transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+  cursor: pointer; border: none;
+}
+.btn:hover { transform: translateY(-2px); }
+.btn-green { background: var(--g600); color: var(--white); }
+.btn-green:hover { background: var(--g500); box-shadow: 0 8px 30px rgba(45,106,45,0.4); }
+.btn-outline-white { background: transparent; color: var(--white); border: 1.5px solid rgba(255,255,255,0.3); }
+.btn-outline-white:hover { border-color: var(--white); background: rgba(255,255,255,0.05); }
+.btn-outline-green { background: transparent; color: var(--g600); border: 1.5px solid var(--g600); }
+.btn-outline-green:hover { background: var(--g600); color: var(--white); }
+.btn-arrow::after { content: '→'; transition: transform 0.2s; }
+.btn:hover .btn-arrow::after, .btn-arrow:hover::after { transform: translateX(4px); }
+
+/* ── SECTION LABELS ── */
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 10px; font-weight: 700; letter-spacing: 4px;
+  text-transform: uppercase; color: var(--g600); margin-bottom: 18px;
+}
+.eyebrow::before {
+  content: ''; display: block; width: 24px; height: 2px; background: var(--g600);
+}
+.eyebrow-white { color: var(--g400); }
+.eyebrow-white::before { background: var(--g400); }
+
+.display-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(48px, 6vw, 80px);
+  letter-spacing: 2px; line-height: 0.95;
+}
+
+/* ── LOGO SVG ── */
+.logo-svg { display: block; }
+
+/* ── UTILITIES ── */
+.text-green { color: var(--g400); }
+.bg-dark { background: var(--g900); }
+.bg-green { background: var(--g600); }
+.bg-light { background: var(--g50); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  #nav { padding: 0 24px; }
+  .nav-links { display: none; }
+  .nav-burger { display: flex; }
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 36px; }
+  footer { padding: 56px 24px 28px; }
+}
+@media (max-width: 600px) {
+  .footer-grid { grid-template-columns: 1fr; }
+}
+</style>
+<style>
+.contact-wrap {
+  min-height: 100vh; background: var(--g900);
+  display: grid; grid-template-columns: 1fr 1fr;
+  padding-top: 72px;
+}
+
+/* LEFT */
+.contact-left {
+  padding: 80px 64px; display: flex; flex-direction: column; justify-content: center;
+  border-right: 1px solid rgba(255,255,255,0.06); position: relative; overflow: hidden;
+}
+.contact-left-bg {
+  position: absolute; inset: 0;
+  background-image: linear-gradient(rgba(92,191,92,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(92,191,92,0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+.contact-left-glow { position: absolute; width: 500px; height: 500px; background: radial-gradient(circle, rgba(45,106,45,0.2) 0%, transparent 70%); bottom: -200px; left: -100px; pointer-events: none; }
+.contact-left-content { position: relative; z-index: 1; }
+.contact-left h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(52px, 6vw, 80px); letter-spacing: 2px; line-height: 0.92; color: var(--white); margin-bottom: 28px; }
+.contact-left h1 em { color: var(--g400); font-style: normal; }
+.contact-left p { font-size: 16px; line-height: 1.85; color: rgba(255,255,255,0.5); max-width: 380px; margin-bottom: 48px; }
+.contact-info { display: flex; flex-direction: column; gap: 20px; }
+.contact-info-item { display: flex; align-items: center; gap: 16px; }
+.contact-info-icon { width: 44px; height: 44px; background: rgba(92,191,92,0.1); border: 1px solid rgba(92,191,92,0.2); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.contact-info-label { font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.3); }
+.contact-info-value { font-size: 15px; color: var(--white); margin-top: 2px; }
+.contact-info-value a { color: var(--g400); text-decoration: none; }
+.contact-info-value a:hover { color: var(--g300); }
+
+/* RIGHT */
+.contact-right { padding: 80px 64px; display: flex; flex-direction: column; justify-content: center; background: var(--white); }
+.contact-right h2 { font-family: 'Bebas Neue', sans-serif; font-size: 40px; letter-spacing: 2px; margin-bottom: 8px; }
+.contact-right p { font-size: 14px; color: var(--muted); margin-bottom: 40px; }
+
+.form-group { margin-bottom: 24px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.form-group label { display: block; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--ink); margin-bottom: 8px; }
+.form-group input, .form-group select, .form-group textarea {
+  width: 100%; padding: 14px 16px;
+  border: 1.5px solid var(--border); border-radius: 4px;
+  font-size: 15px; font-family: 'DM Sans', sans-serif; color: var(--ink);
+  background: var(--g50); transition: border-color 0.2s, background 0.2s;
+  outline: none; resize: none;
+}
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+  border-color: var(--g600); background: var(--white);
+}
+.form-group textarea { height: 120px; }
+.form-group select { appearance: none; cursor: pointer; }
+
+.submit-btn {
+  width: 100%; padding: 17px; background: var(--g600); color: var(--white);
+  border: none; border-radius: 4px; font-size: 12px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase; cursor: pointer;
+  transition: background 0.2s, transform 0.2s; font-family: 'DM Sans', sans-serif;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+}
+.submit-btn:hover { background: var(--g500); transform: translateY(-2px); }
+.submit-btn .arrow { transition: transform 0.2s; }
+.submit-btn:hover .arrow { transform: translateX(4px); }
+
+.form-success {
+  display: none; text-align: center; padding: 40px 20px;
+  background: var(--g50); border-radius: 8px; border: 1px solid var(--g200);
+}
+.form-success h3 { font-family: 'Bebas Neue', sans-serif; font-size: 36px; letter-spacing: 2px; color: var(--g600); margin-bottom: 10px; }
+.form-success p { font-size: 15px; color: var(--muted); }
+.success-check { width: 60px; height: 60px; background: var(--g600); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; }
+.success-check svg { width: 28px; height: 28px; }
+
+@media (max-width: 900px) {
+  .contact-wrap { grid-template-columns: 1fr; }
+  .contact-left { padding: 80px 24px 60px; min-height: auto; }
+  .contact-right { padding: 60px 24px 80px; }
+  .form-row { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+<nav id="nav">
+  <a class="nav-logo" href="index.html">
+    <svg class="logo-svg" width="32" height="42" viewBox="0 0 60 64" fill="none">
+      <rect fill="#5cbf5c" x="4" y="44" width="10" height="16" rx="1.5"/>
+      <rect fill="#5cbf5c" x="20" y="30" width="10" height="30" rx="1.5"/>
+      <rect fill="#5cbf5c" x="36" y="16" width="10" height="44" rx="1.5"/>
+    </svg>
+    <div class="nav-logo-text">
+      <span class="nav-brand">Gaskey</span>
+      <span class="nav-tagline">Solutions</span>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="services.html">Services</a></li>
+    <li><a href="social.html">Social Media</a></li>
+    <li><a href="pricing.html">Pricing</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html" class="nav-cta">Get Started</a></li>
+  </ul>
+  <div class="nav-burger" id="burger">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobile-menu">
+  <a href="index.html">Home</a>
+  <a href="services.html">Services</a>
+  <a href="social.html">Social Media</a>
+  <a href="pricing.html">Pricing</a>
+  <a href="about.html">About</a>
+  <a href="contact.html">Contact</a>
+</div>
+
+<div class="contact-wrap">
+  <!-- LEFT -->
+  <div class="contact-left">
+    <div class="contact-left-bg"></div>
+    <div class="contact-left-glow"></div>
+    <div class="contact-left-content">
+      <div class="eyebrow eyebrow-white reveal">Get in Touch</div>
+      <h1 class="reveal" data-delay="100">Let's Build<br>Something<br><em>Great.</em></h1>
+      <p class="reveal" data-delay="200">Tell me about your project. I'll get back to you within 24 hours with a plan and a price — no fluff, no obligation.</p>
+      <div class="contact-info reveal" data-delay="300">
+        <div class="contact-info-item">
+          <div class="contact-info-icon">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M2 4h14v10a2 2 0 01-2 2H4a2 2 0 01-2-2V4z" stroke="var(--g400)" stroke-width="1.5" fill="none"/><path d="M2 4l7 6 7-6" stroke="var(--g400)" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
+          </div>
+          <div><div class="contact-info-label">Email</div><div class="contact-info-value"><a href="mailto:hello@gaskeysolutions.com">hello@gaskeysolutions.com</a></div></div>
+        </div>
+        <div class="contact-info-item">
+          <div class="contact-info-icon">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" stroke="var(--g400)" stroke-width="1.5" fill="none"/><path d="M9 5v4l3 2" stroke="var(--g400)" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
+          </div>
+          <div><div class="contact-info-label">Response Time</div><div class="contact-info-value">Within 24 hours</div></div>
+        </div>
+        <div class="contact-info-item">
+          <div class="contact-info-icon">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 9a6 6 0 1012 0A6 6 0 003 9z" stroke="var(--g400)" stroke-width="1.5" fill="none"/><path d="M9 3v6l4 2" stroke="var(--g400)" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
+          </div>
+          <div><div class="contact-info-label">Availability</div><div class="contact-info-value">Accepting new clients</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="contact-right">
+    <div class="reveal">
+      <div class="eyebrow">Free Quote</div>
+      <h2>Start Your Project</h2>
+      <p>Fill out the form and I'll reach out with a custom proposal — no commitment required.</p>
+    </div>
+
+    <form id="contact-form" class="reveal" data-delay="100" onsubmit="submitForm(event)">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="fname">First Name</label>
+          <input type="text" id="fname" placeholder="Samuel" required>
+        </div>
+        <div class="form-group">
+          <label for="lname">Last Name</label>
+          <input type="text" id="lname" placeholder="Gaskey" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" placeholder="you@yourbrand.com" required>
+      </div>
+      <div class="form-group">
+        <label for="service">What do you need?</label>
+        <select id="service">
+          <option value="">Select a service...</option>
+          <option>Website Design & Build</option>
+          <option>Google Ads</option>
+          <option>Meta Ads (Facebook/Instagram)</option>
+          <option>YouTube Ads</option>
+          <option>Growth Package (Website + Ads)</option>
+          <option>Full Scale — Everything</option>
+          <option>Not sure yet</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="budget">Estimated Budget</label>
+        <select id="budget">
+          <option value="">Select a range...</option>
+          <option>Under $300</option>
+          <option>$300 – $600</option>
+          <option>$600 – $1,000</option>
+          <option>$1,000 – $2,500</option>
+          <option>$2,500+</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="message">Tell me about your brand</label>
+        <textarea id="message" placeholder="What's your business, what are your goals, and what's the biggest challenge you're facing?"></textarea>
+      </div>
+      <button type="submit" class="submit-btn">
+        Send My Request <span class="arrow">→</span>
+      </button>
+    </form>
+
+    <div class="form-success" id="form-success">
+      <div class="success-check">
+        <svg viewBox="0 0 28 28" fill="none"><path d="M6 14l6 6L22 8" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <h3>Message Sent!</h3>
+      <p>Thanks for reaching out. I'll review your project and get back to you within 24 hours.</p>
+    </div>
+  </div>
+</div>
+
+
+<footer>
+  <div class="footer-grid">
+    <div>
+      <a class="nav-logo" href="index.html" style="text-decoration:none;display:inline-flex;align-items:center;gap:12px;margin-bottom:4px;">
+        <svg width="28" height="36" viewBox="0 0 60 64" fill="none">
+          <rect fill="#5cbf5c" x="4" y="44" width="10" height="16" rx="1.5"/>
+          <rect fill="#5cbf5c" x="20" y="30" width="10" height="30" rx="1.5"/>
+          <rect fill="#5cbf5c" x="36" y="16" width="10" height="44" rx="1.5"/>
+        </svg>
+        <div class="nav-logo-text">
+          <span class="nav-brand">Gaskey</span>
+          <span class="nav-tagline">Solutions</span>
+        </div>
+      </a>
+      <p class="footer-brand-desc">Professional websites and social media marketing at competitive rates. We grow your brand.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="services.html">Website Design</a></li>
+        <li><a href="services.html">Web Hosting</a></li>
+        <li><a href="social.html">Social Media Ads</a></li>
+        <li><a href="services.html">Brand Strategy</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Platforms</h4>
+      <ul>
+        <li><a href="social.html">Google Ads</a></li>
+        <li><a href="social.html">Meta Ads</a></li>
+        <li><a href="social.html">YouTube Ads</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="pricing.html">Pricing</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2025 Gaskey Solutions. All rights reserved.</span>
+    <a href="mailto:hello@gaskeysolutions.com" class="footer-email">hello@gaskeysolutions.com</a>
+  </div>
+</footer>
+<script>// ── CURSOR ──
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+function animCursor() {
+  if (cursor) { cursor.style.transform = `translate(${mx - 6}px, ${my - 6}px)`; }
+  rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+  if (ring) { ring.style.transform = `translate(${rx - 18}px, ${ry - 18}px)`; }
+  requestAnimationFrame(animCursor);
+}
+animCursor();
+document.querySelectorAll('a, button').forEach(el => {
+  el.addEventListener('mouseenter', () => { if(cursor){cursor.style.transform += ' scale(2.5)'; cursor.style.background='var(--g300)';} if(ring){ring.style.opacity='0';} });
+  el.addEventListener('mouseleave', () => { if(cursor){cursor.style.background='var(--g400)';} if(ring){ring.style.opacity='0.5';} });
+});
+
+// ── NAV SCROLL ──
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav && (window.scrollY > 40 ? nav.classList.add('scrolled') : nav.classList.remove('scrolled'));
+});
+
+// ── MOBILE MENU ──
+const burger = document.getElementById('burger');
+const mobileMenu = document.getElementById('mobile-menu');
+if (burger && mobileMenu) {
+  burger.addEventListener('click', () => {
+    mobileMenu.classList.toggle('open');
+    document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+  });
+  mobileMenu.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      mobileMenu.classList.remove('open');
+      document.body.style.overflow = '';
+    });
+  });
+}
+
+// ── SCROLL REVEAL ──
+const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      const delay = entry.target.dataset.delay || 0;
+      setTimeout(() => entry.target.classList.add('visible'), delay);
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+revealEls.forEach(el => observer.observe(el));
+
+// ── STAGGER CHILDREN ──
+document.querySelectorAll('[data-stagger]').forEach(parent => {
+  parent.querySelectorAll(':scope > *').forEach((child, i) => {
+    child.classList.add('reveal');
+    child.dataset.delay = i * 100;
+    observer.observe(child);
+  });
+});
+
+// ── COUNT UP ANIMATION ──
+function countUp(el) {
+  const target = parseFloat(el.dataset.count);
+  const suffix = el.dataset.suffix || '';
+  const prefix = el.dataset.prefix || '';
+  const duration = 1600;
+  const start = performance.now();
+  function step(now) {
+    const p = Math.min((now - start) / duration, 1);
+    const ease = 1 - Math.pow(1 - p, 3);
+    const val = target < 10 ? (ease * target).toFixed(1) : Math.round(ease * target);
+    el.textContent = prefix + val + suffix;
+    if (p < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+const countObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { countUp(e.target); countObserver.unobserve(e.target); } });
+}, { threshold: 0.5 });
+document.querySelectorAll('[data-count]').forEach(el => countObserver.observe(el));
+
+// ── ACTIVE NAV ──
+const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+document.querySelectorAll('.nav-links a').forEach(a => {
+  const href = a.getAttribute('href');
+  if (href === currentPage || (currentPage === '' && href === 'index.html')) a.classList.add('active');
+});
+</script>
+<script>
+function submitForm(e) {
+  e.preventDefault();
+  const form = document.getElementById('contact-form');
+  const success = document.getElementById('form-success');
+  form.style.opacity = '0';
+  form.style.transform = 'translateY(20px)';
+  form.style.transition = 'all 0.4s ease';
+  setTimeout(() => {
+    form.style.display = 'none';
+    success.style.display = 'block';
+    success.style.opacity = '0';
+    success.style.animation = 'none';
+    setTimeout(() => { success.style.opacity = '1'; success.style.transition = 'opacity 0.4s ease'; }, 50);
+  }, 400);
+}
+</script>
+</body>
+</html>

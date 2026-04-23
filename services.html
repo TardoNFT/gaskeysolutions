@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Services — Gaskey Solutions</title>
+<style>@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&family=DM+Serif+Display:ital@0;1&display=swap');
+
+:root {
+  --g900: #0d1a0d;
+  --g800: #162316;
+  --g700: #1e361e;
+  --g600: #2d6a2d;
+  --g500: #3d8c3d;
+  --g400: #5cbf5c;
+  --g300: #8fd98f;
+  --g200: #c2eec2;
+  --g100: #e8f5e8;
+  --g50:  #f4fbf4;
+  --white: #ffffff;
+  --ink:  #0d1a0d;
+  --muted: #607060;
+  --border: rgba(45,106,45,0.15);
+  --shadow: 0 4px 40px rgba(13,26,13,0.12);
+  --shadow-lg: 0 20px 80px rgba(13,26,13,0.18);
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--white);
+  color: var(--ink);
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ── CUSTOM CURSOR ── */
+#cursor {
+  width: 12px; height: 12px;
+  background: var(--g400);
+  border-radius: 50%;
+  position: fixed; top: 0; left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  transition: transform 0.15s ease, width 0.2s, height 0.2s, background 0.2s;
+  transform: translate(-50%,-50%);
+}
+#cursor-ring {
+  width: 36px; height: 36px;
+  border: 1.5px solid var(--g400);
+  border-radius: 50%;
+  position: fixed; top: 0; left: 0;
+  pointer-events: none;
+  z-index: 9998;
+  transition: transform 0.35s ease, width 0.2s, height 0.2s, opacity 0.2s;
+  transform: translate(-50%,-50%);
+  opacity: 0.5;
+}
+body:hover #cursor { opacity: 1; }
+a:hover ~ #cursor, button:hover ~ #cursor { transform: translate(-50%,-50%) scale(2.5); }
+
+/* ── NAV ── */
+#nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+  height: 72px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 56px;
+  transition: background 0.4s, box-shadow 0.4s, border-color 0.4s;
+  border-bottom: 1px solid transparent;
+}
+#nav.scrolled {
+  background: rgba(13,26,13,0.96);
+  backdrop-filter: blur(12px);
+  border-color: rgba(92,191,92,0.12);
+  box-shadow: 0 2px 40px rgba(0,0,0,0.3);
+}
+.nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.nav-logo-text { display: flex; flex-direction: column; }
+.nav-brand {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 24px; letter-spacing: 3px;
+  color: var(--white); line-height: 1;
+}
+.nav-tagline {
+  font-size: 7px; font-weight: 500; letter-spacing: 3.5px;
+  text-transform: uppercase; color: var(--g400); margin-top: 1px;
+}
+.nav-links { display: flex; gap: 8px; list-style: none; align-items: center; }
+.nav-links a {
+  text-decoration: none; font-size: 11px; font-weight: 500;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: rgba(255,255,255,0.65); padding: 8px 16px; border-radius: 3px;
+  transition: color 0.2s, background 0.2s;
+}
+.nav-links a:hover, .nav-links a.active { color: var(--white); background: rgba(92,191,92,0.1); }
+.nav-cta {
+  background: var(--g600) !important; color: var(--white) !important;
+  padding: 10px 24px !important; border-radius: 3px !important;
+  transition: background 0.2s, transform 0.2s !important;
+}
+.nav-cta:hover { background: var(--g500) !important; transform: translateY(-1px) !important; }
+
+/* hamburger */
+.nav-burger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 8px; }
+.nav-burger span { display: block; width: 24px; height: 2px; background: var(--white); border-radius: 2px; transition: all 0.3s; }
+.mobile-menu {
+  display: none; position: fixed; inset: 0; background: var(--g900);
+  z-index: 490; flex-direction: column; align-items: center; justify-content: center; gap: 32px;
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a {
+  font-family: 'Bebas Neue', sans-serif; font-size: 48px; letter-spacing: 4px;
+  color: var(--white); text-decoration: none; transition: color 0.2s;
+}
+.mobile-menu a:hover { color: var(--g400); }
+
+/* ── PAGE TRANSITIONS ── */
+#page-overlay {
+  position: fixed; inset: 0; background: var(--g900);
+  z-index: 800; pointer-events: none;
+  transform: scaleY(0); transform-origin: bottom;
+  transition: transform 0.5s cubic-bezier(0.77,0,0.18,1);
+}
+#page-overlay.covering { transform: scaleY(1); transform-origin: bottom; }
+#page-overlay.revealing { transform: scaleY(0); transform-origin: top; }
+
+/* ── SCROLL REVEAL ── */
+.reveal {
+  opacity: 0; transform: translateY(40px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-left { opacity: 0; transform: translateX(-40px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal-left.visible { opacity: 1; transform: translateX(0); }
+.reveal-right { opacity: 0; transform: translateX(40px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal-right.visible { opacity: 1; transform: translateX(0); }
+
+/* ── FOOTER ── */
+footer {
+  background: var(--g900);
+  padding: 72px 56px 36px;
+  border-top: 1px solid rgba(92,191,92,0.1);
+}
+.footer-grid {
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 56px; margin-bottom: 56px;
+}
+.footer-brand-desc { font-size: 14px; color: rgba(255,255,255,0.4); line-height: 1.8; margin-top: 16px; max-width: 280px; }
+.footer-col h4 {
+  font-size: 9px; font-weight: 700; letter-spacing: 3px;
+  text-transform: uppercase; color: var(--g400); margin-bottom: 20px;
+}
+.footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.footer-col ul a {
+  font-size: 14px; color: rgba(255,255,255,0.45); text-decoration: none;
+  transition: color 0.2s;
+}
+.footer-col ul a:hover { color: var(--white); }
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding-top: 28px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
+}
+.footer-copy { font-size: 12px; color: rgba(255,255,255,0.25); letter-spacing: 0.5px; }
+.footer-email { font-size: 12px; color: var(--g400); text-decoration: none; letter-spacing: 0.5px; }
+.footer-email:hover { color: var(--g300); }
+
+/* ── BUTTONS ── */
+.btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 16px 36px; border-radius: 3px;
+  font-size: 11px; font-weight: 600; letter-spacing: 2px;
+  text-transform: uppercase; text-decoration: none;
+  transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+  cursor: pointer; border: none;
+}
+.btn:hover { transform: translateY(-2px); }
+.btn-green { background: var(--g600); color: var(--white); }
+.btn-green:hover { background: var(--g500); box-shadow: 0 8px 30px rgba(45,106,45,0.4); }
+.btn-outline-white { background: transparent; color: var(--white); border: 1.5px solid rgba(255,255,255,0.3); }
+.btn-outline-white:hover { border-color: var(--white); background: rgba(255,255,255,0.05); }
+.btn-outline-green { background: transparent; color: var(--g600); border: 1.5px solid var(--g600); }
+.btn-outline-green:hover { background: var(--g600); color: var(--white); }
+.btn-arrow::after { content: '→'; transition: transform 0.2s; }
+.btn:hover .btn-arrow::after, .btn-arrow:hover::after { transform: translateX(4px); }
+
+/* ── SECTION LABELS ── */
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 10px; font-weight: 700; letter-spacing: 4px;
+  text-transform: uppercase; color: var(--g600); margin-bottom: 18px;
+}
+.eyebrow::before {
+  content: ''; display: block; width: 24px; height: 2px; background: var(--g600);
+}
+.eyebrow-white { color: var(--g400); }
+.eyebrow-white::before { background: var(--g400); }
+
+.display-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(48px, 6vw, 80px);
+  letter-spacing: 2px; line-height: 0.95;
+}
+
+/* ── LOGO SVG ── */
+.logo-svg { display: block; }
+
+/* ── UTILITIES ── */
+.text-green { color: var(--g400); }
+.bg-dark { background: var(--g900); }
+.bg-green { background: var(--g600); }
+.bg-light { background: var(--g50); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  #nav { padding: 0 24px; }
+  .nav-links { display: none; }
+  .nav-burger { display: flex; }
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 36px; }
+  footer { padding: 56px 24px 28px; }
+}
+@media (max-width: 600px) {
+  .footer-grid { grid-template-columns: 1fr; }
+}
+</style>
+<style>
+.page-hero {
+  min-height: 52vh; background: var(--g900);
+  display: flex; align-items: flex-end;
+  padding: 140px 56px 80px; position: relative; overflow: hidden;
+}
+.page-hero-bg {
+  position: absolute; inset: 0;
+  background-image: linear-gradient(rgba(92,191,92,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(92,191,92,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+.page-hero-glow {
+  position: absolute; width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(45,106,45,0.2) 0%, transparent 70%);
+  top: -100px; right: -100px; pointer-events: none;
+}
+.page-hero h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(60px, 8vw, 100px); letter-spacing: 2px; line-height: 0.92; color: var(--white); position: relative; z-index: 1; }
+.page-hero h1 em { color: var(--g400); font-style: normal; }
+.page-hero-sub { font-size: 17px; color: rgba(255,255,255,0.45); max-width: 500px; margin-top: 20px; line-height: 1.8; position: relative; z-index: 1; }
+
+/* ── MAIN SERVICES ── */
+.services-main { padding: 100px 56px; background: var(--white); }
+.services-main-inner { max-width: 1140px; margin: 0 auto; }
+.service-block {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+  padding: 80px 0; border-bottom: 1px solid var(--border);
+}
+.service-block:last-child { border-bottom: none; }
+.service-block.reverse .service-visual { order: -1; }
+.service-num { font-family: 'Bebas Neue', sans-serif; font-size: 100px; color: var(--g100); line-height: 1; margin-bottom: -20px; }
+.service-block h2 { font-family: 'Bebas Neue', sans-serif; font-size: 44px; letter-spacing: 2px; line-height: 1.05; margin-bottom: 20px; }
+.service-block p { font-size: 15px; line-height: 1.9; color: var(--muted); margin-bottom: 14px; }
+.service-features { list-style: none; display: flex; flex-direction: column; gap: 10px; margin: 24px 0 32px; }
+.service-features li { display: flex; align-items: flex-start; gap: 12px; font-size: 14px; color: var(--ink); line-height: 1.6; }
+.service-features li::before { content: ''; display: block; width: 7px; height: 7px; border-radius: 50%; background: var(--g600); margin-top: 7px; flex-shrink: 0; }
+
+.service-visual {
+  background: var(--g50); border: 1px solid var(--border); border-radius: 6px;
+  padding: 48px; display: flex; align-items: center; justify-content: center;
+  min-height: 320px; position: relative; overflow: hidden;
+}
+.service-visual-icon svg { width: 120px; height: 120px; }
+
+/* animated mockup */
+.mockup-browser {
+  width: 100%; max-width: 340px; background: var(--white);
+  border-radius: 8px; box-shadow: var(--shadow-lg); overflow: hidden;
+}
+.mockup-bar { background: #f0f0f0; padding: 10px 14px; display: flex; gap: 6px; align-items: center; }
+.mockup-dot { width: 10px; height: 10px; border-radius: 50%; }
+.mockup-dot-r { background: #ff5f57; }
+.mockup-dot-y { background: #febc2e; }
+.mockup-dot-g { background: #28c840; }
+.mockup-url { flex: 1; background: white; border-radius: 4px; height: 20px; margin-left: 8px; }
+.mockup-body { padding: 20px; }
+.mockup-line { height: 10px; border-radius: 5px; background: var(--g200); margin-bottom: 8px; }
+.mockup-line.short { width: 60%; }
+.mockup-line.med { width: 80%; }
+.mockup-line.accent { background: var(--g600); width: 40%; }
+
+/* ad visual */
+.ad-visual { display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 300px; }
+.ad-card-mini {
+  background: var(--white); border-radius: 6px; padding: 16px 18px;
+  box-shadow: var(--shadow); display: flex; align-items: center; gap: 14px;
+  animation: floatCard 3s ease-in-out infinite;
+}
+.ad-card-mini:nth-child(2) { animation-delay: 0.5s; }
+.ad-card-mini:nth-child(3) { animation-delay: 1s; }
+.ad-icon { width: 36px; height: 36px; border-radius: 8px; background: var(--g100); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.ad-text-lines div { height: 8px; border-radius: 4px; background: var(--g200); margin-bottom: 6px; }
+.ad-text-lines div:first-child { width: 100px; background: var(--g600); }
+.ad-text-lines div:last-child { width: 70px; }
+@keyframes floatCard {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+/* ── PROCESS ── */
+.process { padding: 100px 56px; background: var(--g900); }
+.process-inner { max-width: 1140px; margin: 0 auto; }
+.process-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin-top: 64px; position: relative; }
+.process-steps::before {
+  content: ''; position: absolute; top: 28px; left: 10%; right: 10%; height: 1px;
+  background: linear-gradient(to right, transparent, var(--g600), transparent);
+}
+.process-step { padding: 0 24px; text-align: center; }
+.process-step-num {
+  width: 56px; height: 56px; border-radius: 50%; background: var(--g700); border: 1px solid var(--g600);
+  display: flex; align-items: center; justify-content: center; margin: 0 auto 24px;
+  font-family: 'Bebas Neue', sans-serif; font-size: 24px; color: var(--g400);
+  position: relative; z-index: 1;
+  transition: background 0.3s, transform 0.3s;
+}
+.process-step:hover .process-step-num { background: var(--g600); transform: scale(1.1); }
+.process-step h3 { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 2px; color: var(--white); margin-bottom: 12px; }
+.process-step p { font-size: 13px; line-height: 1.7; color: rgba(255,255,255,0.4); }
+
+@media (max-width: 900px) {
+  .page-hero { padding: 120px 24px 60px; }
+  .services-main { padding: 60px 24px; }
+  .service-block { grid-template-columns: 1fr; gap: 40px; }
+  .service-block.reverse .service-visual { order: 0; }
+  .process { padding: 80px 24px; }
+  .process-steps { grid-template-columns: 1fr 1fr; gap: 40px; }
+  .process-steps::before { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+<nav id="nav">
+  <a class="nav-logo" href="index.html">
+    <svg class="logo-svg" width="32" height="42" viewBox="0 0 60 64" fill="none">
+      <rect fill="#5cbf5c" x="4" y="44" width="10" height="16" rx="1.5"/>
+      <rect fill="#5cbf5c" x="20" y="30" width="10" height="30" rx="1.5"/>
+      <rect fill="#5cbf5c" x="36" y="16" width="10" height="44" rx="1.5"/>
+    </svg>
+    <div class="nav-logo-text">
+      <span class="nav-brand">Gaskey</span>
+      <span class="nav-tagline">Solutions</span>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="services.html">Services</a></li>
+    <li><a href="social.html">Social Media</a></li>
+    <li><a href="pricing.html">Pricing</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html" class="nav-cta">Get Started</a></li>
+  </ul>
+  <div class="nav-burger" id="burger">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobile-menu">
+  <a href="index.html">Home</a>
+  <a href="services.html">Services</a>
+  <a href="social.html">Social Media</a>
+  <a href="pricing.html">Pricing</a>
+  <a href="about.html">About</a>
+  <a href="contact.html">Contact</a>
+</div>
+
+<section class="page-hero">
+  <div class="page-hero-bg"></div>
+  <div class="page-hero-glow"></div>
+  <div>
+    <div class="eyebrow eyebrow-white reveal">Our Services</div>
+    <h1 class="reveal" data-delay="100">What We<br>Build for<br><em>You</em></h1>
+    <p class="page-hero-sub reveal" data-delay="200">Every service designed to make your brand grow — without the agency price tag.</p>
+  </div>
+</section>
+
+<section class="services-main">
+  <div class="services-main-inner">
+
+    <!-- Service 1 -->
+    <div class="service-block">
+      <div class="reveal-left">
+        <div class="service-num">01</div>
+        <div class="eyebrow">Core Service</div>
+        <h2>Website Design & Development</h2>
+        <p>Your website is your most powerful sales tool. We build custom, hand-coded websites that are fast, beautiful, and engineered to convert visitors into paying customers.</p>
+        <p>No templates. No drag-and-drop builders. Every site is built specifically for your brand and your goals.</p>
+        <ul class="service-features">
+          <li>Custom design tailored to your brand identity</li>
+          <li>Mobile-first, fully responsive on all devices</li>
+          <li>Fast load times optimized for SEO</li>
+          <li>Contact forms, booking integrations, e-commerce</li>
+          <li>2–3 rounds of revisions included</li>
+        </ul>
+        <a href="pricing.html" class="btn btn-green btn-arrow">See Pricing</a>
+      </div>
+      <div class="reveal-right">
+        <div class="service-visual">
+          <div class="mockup-browser">
+            <div class="mockup-bar">
+              <div class="mockup-dot mockup-dot-r"></div>
+              <div class="mockup-dot mockup-dot-y"></div>
+              <div class="mockup-dot mockup-dot-g"></div>
+              <div class="mockup-url"></div>
+            </div>
+            <div class="mockup-body">
+              <div class="mockup-line accent"></div>
+              <div class="mockup-line"></div>
+              <div class="mockup-line med"></div>
+              <div class="mockup-line short"></div>
+              <div style="height:60px;background:var(--g100);border-radius:4px;margin:16px 0;"></div>
+              <div class="mockup-line med"></div>
+              <div class="mockup-line short"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Service 2 -->
+    <div class="service-block reverse">
+      <div class="reveal-right">
+        <div class="service-num">02</div>
+        <div class="eyebrow">Digital Ads</div>
+        <h2>Social Media Marketing</h2>
+        <p>We run targeted advertising campaigns across the three largest digital ad platforms — Google, Meta, and YouTube — to get your brand in front of the people who matter most.</p>
+        <p>From campaign setup to ongoing optimization, we manage the entire process so you can focus on your business.</p>
+        <ul class="service-features">
+          <li>Google Search & Display ad campaigns</li>
+          <li>Facebook & Instagram paid social</li>
+          <li>YouTube pre-roll and in-stream ads</li>
+          <li>Audience targeting and retargeting</li>
+          <li>Monthly performance reporting</li>
+        </ul>
+        <a href="social.html" class="btn btn-green btn-arrow">Learn More</a>
+      </div>
+      <div class="reveal-left">
+        <div class="service-visual">
+          <div class="ad-visual">
+            <div class="ad-card-mini">
+              <div class="ad-icon">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2C5.13 2 2 5.13 2 9s3.13 7 7 7 7-3.13 7-7-3.13-7-7-7zm1 10H8V8h2v4zm0-6H8V4h2v2z" fill="var(--g600)"/></svg>
+              </div>
+              <div class="ad-text-lines"><div></div><div></div></div>
+            </div>
+            <div class="ad-card-mini">
+              <div class="ad-icon">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="1" y="1" width="16" height="16" rx="4" stroke="var(--g600)" stroke-width="1.5" fill="none"/><circle cx="9" cy="9" r="3" stroke="var(--g600)" stroke-width="1.5" fill="none"/></svg>
+              </div>
+              <div class="ad-text-lines"><div></div><div></div></div>
+            </div>
+            <div class="ad-card-mini">
+              <div class="ad-icon">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="1" y="4" width="16" height="10" rx="2" stroke="var(--g600)" stroke-width="1.5" fill="none"/><path d="M7 7l4 2-4 2V7z" fill="var(--g600)"/></svg>
+              </div>
+              <div class="ad-text-lines"><div></div><div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Service 3 -->
+    <div class="service-block">
+      <div class="reveal-left">
+        <div class="service-num">03</div>
+        <div class="eyebrow">Strategy</div>
+        <h2>Brand Growth Strategy</h2>
+        <p>Not sure where to start? We'll map out your entire digital presence and build a clear, actionable strategy that aligns your website, ads, and content into one growth machine.</p>
+        <ul class="service-features">
+          <li>Full brand and competitive audit</li>
+          <li>Target audience research and personas</li>
+          <li>Channel and budget recommendations</li>
+          <li>Content and messaging framework</li>
+          <li>60-day growth roadmap</li>
+        </ul>
+        <a href="contact.html" class="btn btn-green btn-arrow">Get Started</a>
+      </div>
+      <div class="reveal-right">
+        <div class="service-visual">
+          <svg width="180" height="140" viewBox="0 0 180 140" fill="none">
+            <rect x="10" y="90" width="24" height="40" rx="3" fill="var(--g200)"/>
+            <rect x="48" y="65" width="24" height="65" rx="3" fill="var(--g300)"/>
+            <rect x="86" y="40" width="24" height="90" rx="3" fill="var(--g500)"/>
+            <rect x="124" y="15" width="24" height="115" rx="3" fill="var(--g600)"/>
+            <polyline points="22,82 60,57 98,32 136,8" stroke="var(--g400)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            <circle cx="22" cy="82" r="5" fill="var(--g400)"/>
+            <circle cx="60" cy="57" r="5" fill="var(--g400)"/>
+            <circle cx="98" cy="32" r="5" fill="var(--g400)"/>
+            <circle cx="136" cy="8" r="5" fill="var(--g400)"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process">
+  <div class="process-inner">
+    <div class="reveal">
+      <div class="eyebrow eyebrow-white">How It Works</div>
+      <h2 class="display-title" style="color:var(--white);">Our Process</h2>
+    </div>
+    <div class="process-steps" data-stagger>
+      <div class="process-step">
+        <div class="process-step-num">1</div>
+        <h3>Discovery</h3>
+        <p>We learn your brand, goals, and audience inside out before writing a single line of code.</p>
+      </div>
+      <div class="process-step">
+        <div class="process-step-num">2</div>
+        <h3>Strategy</h3>
+        <p>We map out the full plan — design direction, ad platforms, targeting, and budget allocation.</p>
+      </div>
+      <div class="process-step">
+        <div class="process-step-num">3</div>
+        <h3>Build & Launch</h3>
+        <p>We build, test, and launch your website and campaigns with precision and speed.</p>
+      </div>
+      <div class="process-step">
+        <div class="process-step-num">4</div>
+        <h3>Grow & Optimize</h3>
+        <p>We monitor performance and continuously optimize to improve results over time.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<footer>
+  <div class="footer-grid">
+    <div>
+      <a class="nav-logo" href="index.html" style="text-decoration:none;display:inline-flex;align-items:center;gap:12px;margin-bottom:4px;">
+        <svg width="28" height="36" viewBox="0 0 60 64" fill="none">
+          <rect fill="#5cbf5c" x="4" y="44" width="10" height="16" rx="1.5"/>
+          <rect fill="#5cbf5c" x="20" y="30" width="10" height="30" rx="1.5"/>
+          <rect fill="#5cbf5c" x="36" y="16" width="10" height="44" rx="1.5"/>
+        </svg>
+        <div class="nav-logo-text">
+          <span class="nav-brand">Gaskey</span>
+          <span class="nav-tagline">Solutions</span>
+        </div>
+      </a>
+      <p class="footer-brand-desc">Professional websites and social media marketing at competitive rates. We grow your brand.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="services.html">Website Design</a></li>
+        <li><a href="services.html">Web Hosting</a></li>
+        <li><a href="social.html">Social Media Ads</a></li>
+        <li><a href="services.html">Brand Strategy</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Platforms</h4>
+      <ul>
+        <li><a href="social.html">Google Ads</a></li>
+        <li><a href="social.html">Meta Ads</a></li>
+        <li><a href="social.html">YouTube Ads</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="pricing.html">Pricing</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2025 Gaskey Solutions. All rights reserved.</span>
+    <a href="mailto:hello@gaskeysolutions.com" class="footer-email">hello@gaskeysolutions.com</a>
+  </div>
+</footer>
+<script>// ── CURSOR ──
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+function animCursor() {
+  if (cursor) { cursor.style.transform = `translate(${mx - 6}px, ${my - 6}px)`; }
+  rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+  if (ring) { ring.style.transform = `translate(${rx - 18}px, ${ry - 18}px)`; }
+  requestAnimationFrame(animCursor);
+}
+animCursor();
+document.querySelectorAll('a, button').forEach(el => {
+  el.addEventListener('mouseenter', () => { if(cursor){cursor.style.transform += ' scale(2.5)'; cursor.style.background='var(--g300)';} if(ring){ring.style.opacity='0';} });
+  el.addEventListener('mouseleave', () => { if(cursor){cursor.style.background='var(--g400)';} if(ring){ring.style.opacity='0.5';} });
+});
+
+// ── NAV SCROLL ──
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav && (window.scrollY > 40 ? nav.classList.add('scrolled') : nav.classList.remove('scrolled'));
+});
+
+// ── MOBILE MENU ──
+const burger = document.getElementById('burger');
+const mobileMenu = document.getElementById('mobile-menu');
+if (burger && mobileMenu) {
+  burger.addEventListener('click', () => {
+    mobileMenu.classList.toggle('open');
+    document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+  });
+  mobileMenu.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      mobileMenu.classList.remove('open');
+      document.body.style.overflow = '';
+    });
+  });
+}
+
+// ── SCROLL REVEAL ──
+const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      const delay = entry.target.dataset.delay || 0;
+      setTimeout(() => entry.target.classList.add('visible'), delay);
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+revealEls.forEach(el => observer.observe(el));
+
+// ── STAGGER CHILDREN ──
+document.querySelectorAll('[data-stagger]').forEach(parent => {
+  parent.querySelectorAll(':scope > *').forEach((child, i) => {
+    child.classList.add('reveal');
+    child.dataset.delay = i * 100;
+    observer.observe(child);
+  });
+});
+
+// ── COUNT UP ANIMATION ──
+function countUp(el) {
+  const target = parseFloat(el.dataset.count);
+  const suffix = el.dataset.suffix || '';
+  const prefix = el.dataset.prefix || '';
+  const duration = 1600;
+  const start = performance.now();
+  function step(now) {
+    const p = Math.min((now - start) / duration, 1);
+    const ease = 1 - Math.pow(1 - p, 3);
+    const val = target < 10 ? (ease * target).toFixed(1) : Math.round(ease * target);
+    el.textContent = prefix + val + suffix;
+    if (p < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+const countObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { countUp(e.target); countObserver.unobserve(e.target); } });
+}, { threshold: 0.5 });
+document.querySelectorAll('[data-count]').forEach(el => countObserver.observe(el));
+
+// ── ACTIVE NAV ──
+const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+document.querySelectorAll('.nav-links a').forEach(a => {
+  const href = a.getAttribute('href');
+  if (href === currentPage || (currentPage === '' && href === 'index.html')) a.classList.add('active');
+});
+</script>
+</body>
+</html>

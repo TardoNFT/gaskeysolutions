@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — Gaskey Solutions</title>
+<style>@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&family=DM+Serif+Display:ital@0;1&display=swap');
+
+:root {
+  --g900: #0d1a0d;
+  --g800: #162316;
+  --g700: #1e361e;
+  --g600: #2d6a2d;
+  --g500: #3d8c3d;
+  --g400: #5cbf5c;
+  --g300: #8fd98f;
+  --g200: #c2eec2;
+  --g100: #e8f5e8;
+  --g50:  #f4fbf4;
+  --white: #ffffff;
+  --ink:  #0d1a0d;
+  --muted: #607060;
+  --border: rgba(45,106,45,0.15);
+  --shadow: 0 4px 40px rgba(13,26,13,0.12);
+  --shadow-lg: 0 20px 80px rgba(13,26,13,0.18);
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--white);
+  color: var(--ink);
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ── CUSTOM CURSOR ── */
+#cursor {
+  width: 12px; height: 12px;
+  background: var(--g400);
+  border-radius: 50%;
+  position: fixed; top: 0; left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  transition: transform 0.15s ease, width 0.2s, height 0.2s, background 0.2s;
+  transform: translate(-50%,-50%);
+}
+#cursor-ring {
+  width: 36px; height: 36px;
+  border: 1.5px solid var(--g400);
+  border-radius: 50%;
+  position: fixed; top: 0; left: 0;
+  pointer-events: none;
+  z-index: 9998;
+  transition: transform 0.35s ease, width 0.2s, height 0.2s, opacity 0.2s;
+  transform: translate(-50%,-50%);
+  opacity: 0.5;
+}
+body:hover #cursor { opacity: 1; }
+a:hover ~ #cursor, button:hover ~ #cursor { transform: translate(-50%,-50%) scale(2.5); }
+
+/* ── NAV ── */
+#nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+  height: 72px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 56px;
+  transition: background 0.4s, box-shadow 0.4s, border-color 0.4s;
+  border-bottom: 1px solid transparent;
+}
+#nav.scrolled {
+  background: rgba(13,26,13,0.96);
+  backdrop-filter: blur(12px);
+  border-color: rgba(92,191,92,0.12);
+  box-shadow: 0 2px 40px rgba(0,0,0,0.3);
+}
+.nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.nav-logo-text { display: flex; flex-direction: column; }
+.nav-brand {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 24px; letter-spacing: 3px;
+  color: var(--white); line-height: 1;
+}
+.nav-tagline {
+  font-size: 7px; font-weight: 500; letter-spacing: 3.5px;
+  text-transform: uppercase; color: var(--g400); margin-top: 1px;
+}
+.nav-links { display: flex; gap: 8px; list-style: none; align-items: center; }
+.nav-links a {
+  text-decoration: none; font-size: 11px; font-weight: 500;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: rgba(255,255,255,0.65); padding: 8px 16px; border-radius: 3px;
+  transition: color 0.2s, background 0.2s;
+}
+.nav-links a:hover, .nav-links a.active { color: var(--white); background: rgba(92,191,92,0.1); }
+.nav-cta {
+  background: var(--g600) !important; color: var(--white) !important;
+  padding: 10px 24px !important; border-radius: 3px !important;
+  transition: background 0.2s, transform 0.2s !important;
+}
+.nav-cta:hover { background: var(--g500) !important; transform: translateY(-1px) !important; }
+
+/* hamburger */
+.nav-burger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 8px; }
+.nav-burger span { display: block; width: 24px; height: 2px; background: var(--white); border-radius: 2px; transition: all 0.3s; }
+.mobile-menu {
+  display: none; position: fixed; inset: 0; background: var(--g900);
+  z-index: 490; flex-direction: column; align-items: center; justify-content: center; gap: 32px;
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a {
+  font-family: 'Bebas Neue', sans-serif; font-size: 48px; letter-spacing: 4px;
+  color: var(--white); text-decoration: none; transition: color 0.2s;
+}
+.mobile-menu a:hover { color: var(--g400); }
+
+/* ── PAGE TRANSITIONS ── */
+#page-overlay {
+  position: fixed; inset: 0; background: var(--g900);
+  z-index: 800; pointer-events: none;
+  transform: scaleY(0); transform-origin: bottom;
+  transition: transform 0.5s cubic-bezier(0.77,0,0.18,1);
+}
+#page-overlay.covering { transform: scaleY(1); transform-origin: bottom; }
+#page-overlay.revealing { transform: scaleY(0); transform-origin: top; }
+
+/* ── SCROLL REVEAL ── */
+.reveal {
+  opacity: 0; transform: translateY(40px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-left { opacity: 0; transform: translateX(-40px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal-left.visible { opacity: 1; transform: translateX(0); }
+.reveal-right { opacity: 0; transform: translateX(40px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal-right.visible { opacity: 1; transform: translateX(0); }
+
+/* ── FOOTER ── */
+footer {
+  background: var(--g900);
+  padding: 72px 56px 36px;
+  border-top: 1px solid rgba(92,191,92,0.1);
+}
+.footer-grid {
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 56px; margin-bottom: 56px;
+}
+.footer-brand-desc { font-size: 14px; color: rgba(255,255,255,0.4); line-height: 1.8; margin-top: 16px; max-width: 280px; }
+.footer-col h4 {
+  font-size: 9px; font-weight: 700; letter-spacing: 3px;
+  text-transform: uppercase; color: var(--g400); margin-bottom: 20px;
+}
+.footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.footer-col ul a {
+  font-size: 14px; color: rgba(255,255,255,0.45); text-decoration: none;
+  transition: color 0.2s;
+}
+.footer-col ul a:hover { color: var(--white); }
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding-top: 28px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
+}
+.footer-copy { font-size: 12px; color: rgba(255,255,255,0.25); letter-spacing: 0.5px; }
+.footer-email { font-size: 12px; color: var(--g400); text-decoration: none; letter-spacing: 0.5px; }
+.footer-email:hover { color: var(--g300); }
+
+/* ── BUTTONS ── */
+.btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 16px 36px; border-radius: 3px;
+  font-size: 11px; font-weight: 600; letter-spacing: 2px;
+  text-transform: uppercase; text-decoration: none;
+  transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+  cursor: pointer; border: none;
+}
+.btn:hover { transform: translateY(-2px); }
+.btn-green { background: var(--g600); color: var(--white); }
+.btn-green:hover { background: var(--g500); box-shadow: 0 8px 30px rgba(45,106,45,0.4); }
+.btn-outline-white { background: transparent; color: var(--white); border: 1.5px solid rgba(255,255,255,0.3); }
+.btn-outline-white:hover { border-color: var(--white); background: rgba(255,255,255,0.05); }
+.btn-outline-green { background: transparent; color: var(--g600); border: 1.5px solid var(--g600); }
+.btn-outline-green:hover { background: var(--g600); color: var(--white); }
+.btn-arrow::after { content: '→'; transition: transform 0.2s; }
+.btn:hover .btn-arrow::after, .btn-arrow:hover::after { transform: translateX(4px); }
+
+/* ── SECTION LABELS ── */
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 10px; font-weight: 700; letter-spacing: 4px;
+  text-transform: uppercase; color: var(--g600); margin-bottom: 18px;
+}
+.eyebrow::before {
+  content: ''; display: block; width: 24px; height: 2px; background: var(--g600);
+}
+.eyebrow-white { color: var(--g400); }
+.eyebrow-white::before { background: var(--g400); }
+
+.display-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(48px, 6vw, 80px);
+  letter-spacing: 2px; line-height: 0.95;
+}
+
+/* ── LOGO SVG ── */
+.logo-svg { display: block; }
+
+/* ── UTILITIES ── */
+.text-green { color: var(--g400); }
+.bg-dark { background: var(--g900); }
+.bg-green { background: var(--g600); }
+.bg-light { background: var(--g50); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  #nav { padding: 0 24px; }
+  .nav-links { display: none; }
+  .nav-burger { display: flex; }
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 36px; }
+  footer { padding: 56px 24px 28px; }
+}
+@media (max-width: 600px) {
+  .footer-grid { grid-template-columns: 1fr; }
+}
+</style>
+<style>
+.page-hero {
+  min-height: 60vh; background: var(--g900);
+  display: grid; grid-template-columns: 1fr 1fr; align-items: end;
+  padding: 140px 56px 80px; position: relative; overflow: hidden; gap: 60px;
+}
+.page-hero-bg {
+  position: absolute; inset: 0;
+  background-image: linear-gradient(rgba(92,191,92,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(92,191,92,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+.page-hero h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(60px, 7vw, 88px); letter-spacing: 2px; line-height: 0.92; color: var(--white); position: relative; z-index: 1; }
+.page-hero h1 em { color: var(--g400); font-style: normal; }
+.page-hero-right { position: relative; z-index: 1; }
+.page-hero-sub { font-size: 16px; color: rgba(255,255,255,0.5); line-height: 1.85; }
+
+/* ── PROFILE ── */
+.profile { padding: 100px 56px; background: var(--white); }
+.profile-inner { max-width: 1140px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.4fr; gap: 100px; align-items: start; }
+
+.profile-card {
+  background: var(--g900); border-radius: 8px; overflow: hidden;
+  border: 1px solid rgba(92,191,92,0.12); position: sticky; top: 100px;
+}
+.profile-card-top { padding: 48px 40px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+.profile-avatar {
+  width: 80px; height: 80px; background: var(--g600); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; margin-bottom: 28px;
+  font-family: 'Bebas Neue', sans-serif; font-size: 32px; color: var(--white); letter-spacing: 2px;
+}
+.profile-name { font-family: 'Bebas Neue', sans-serif; font-size: 36px; letter-spacing: 2px; color: var(--white); margin-bottom: 4px; }
+.profile-role { font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--g400); }
+.profile-details { padding: 28px 40px; display: flex; flex-direction: column; gap: 16px; }
+.profile-detail { display: flex; align-items: center; gap: 14px; }
+.profile-detail-icon { width: 36px; height: 36px; background: rgba(92,191,92,0.1); border-radius: 6px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.profile-detail-label { font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
+.profile-detail-value { font-size: 14px; color: rgba(255,255,255,0.8); margin-top: 1px; }
+.profile-card-foot { padding: 24px 40px; border-top: 1px solid rgba(255,255,255,0.06); }
+
+/* story */
+.profile-story h2 { font-family: 'Bebas Neue', sans-serif; font-size: 52px; letter-spacing: 2px; line-height: 1; margin-bottom: 32px; }
+.profile-story p { font-size: 16px; line-height: 1.95; color: var(--muted); margin-bottom: 24px; }
+.profile-story p strong { color: var(--ink); font-weight: 600; }
+
+.values { margin-top: 48px; }
+.values h3 { font-family: 'Bebas Neue', sans-serif; font-size: 32px; letter-spacing: 2px; margin-bottom: 24px; }
+.value-item { display: flex; gap: 20px; margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--border); }
+.value-item:last-child { border-bottom: none; }
+.value-num { font-family: 'Bebas Neue', sans-serif; font-size: 40px; color: var(--g200); line-height: 1; flex-shrink: 0; width: 40px; }
+.value-item h4 { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+.value-item p { font-size: 14px; line-height: 1.7; color: var(--muted); }
+
+/* ── MISSION ── */
+.mission { padding: 100px 56px; background: var(--g900); text-align: center; position: relative; overflow: hidden; }
+.mission-glow { position: absolute; width: 600px; height: 400px; background: radial-gradient(ellipse, rgba(45,106,45,0.2) 0%, transparent 70%); top: 50%; left: 50%; transform: translate(-50%,-50%); pointer-events: none; }
+.mission blockquote {
+  font-family: 'DM Serif Display', serif; font-size: clamp(28px, 4vw, 44px);
+  color: var(--white); max-width: 760px; margin: 0 auto 40px; line-height: 1.4;
+  font-style: italic; position: relative; z-index: 1;
+}
+.mission blockquote::before { content: '"'; color: var(--g400); font-size: 100px; line-height: 0.5; display: block; margin-bottom: 20px; }
+.mission-sig { font-size: 12px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--g400); position: relative; z-index: 1; }
+
+@media (max-width: 900px) {
+  .page-hero { grid-template-columns: 1fr; padding: 120px 24px 60px; }
+  .profile { padding: 60px 24px; }
+  .profile-inner { grid-template-columns: 1fr; gap: 48px; }
+  .profile-card { position: static; }
+  .mission { padding: 80px 24px; }
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+<nav id="nav">
+  <a class="nav-logo" href="index.html">
+    <svg class="logo-svg" width="32" height="42" viewBox="0 0 60 64" fill="none">
+      <rect fill="#5cbf5c" x="4" y="44" width="10" height="16" rx="1.5"/>
+      <rect fill="#5cbf5c" x="20" y="30" width="10" height="30" rx="1.5"/>
+      <rect fill="#5cbf5c" x="36" y="16" width="10" height="44" rx="1.5"/>
+    </svg>
+    <div class="nav-logo-text">
+      <span class="nav-brand">Gaskey</span>
+      <span class="nav-tagline">Solutions</span>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="services.html">Services</a></li>
+    <li><a href="social.html">Social Media</a></li>
+    <li><a href="pricing.html">Pricing</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html" class="nav-cta">Get Started</a></li>
+  </ul>
+  <div class="nav-burger" id="burger">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobile-menu">
+  <a href="index.html">Home</a>
+  <a href="services.html">Services</a>
+  <a href="social.html">Social Media</a>
+  <a href="pricing.html">Pricing</a>
+  <a href="about.html">About</a>
+  <a href="contact.html">Contact</a>
+</div>
+
+<section class="page-hero">
+  <div class="page-hero-bg"></div>
+  <div>
+    <div class="eyebrow eyebrow-white reveal">About Us</div>
+    <h1 class="reveal" data-delay="100">Behind<br>the Brand.<br><em>Our Story.</em></h1>
+  </div>
+  <div class="page-hero-right reveal" data-delay="200">
+    <p class="page-hero-sub">Gaskey Solutions was built on a simple idea: every brand deserves access to professional marketing — not just the ones with big budgets. We're here to change that.</p>
+  </div>
+</section>
+
+<section class="profile">
+  <div class="profile-inner">
+    <div class="reveal-left">
+      <div class="profile-card">
+        <div class="profile-card-top">
+          <div class="profile-avatar">SG</div>
+          <div class="profile-name">Samuel Gaskey</div>
+          <div class="profile-role">Founder & Lead Strategist</div>
+        </div>
+        <div class="profile-details">
+          <div class="profile-detail">
+            <div class="profile-detail-icon">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1a5 5 0 100 10A5 5 0 008 1zm0 3v3l2 2" stroke="var(--g400)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+            </div>
+            <div><div class="profile-detail-label">Age</div><div class="profile-detail-value">18 years old</div></div>
+          </div>
+          <div class="profile-detail">
+            <div class="profile-detail-icon">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 12L8 2l6 10H2z" stroke="var(--g400)" stroke-width="1.5" stroke-linejoin="round" fill="none"/></svg>
+            </div>
+            <div><div class="profile-detail-label">Education</div><div class="profile-detail-value">Marketing Arts Major</div></div>
+          </div>
+          <div class="profile-detail">
+            <div class="profile-detail-icon">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="8" width="3" height="6" rx="1" fill="var(--g400)"/><rect x="6" y="5" width="3" height="9" rx="1" fill="var(--g400)"/><rect x="10" y="2" width="3" height="12" rx="1" fill="var(--g400)"/></svg>
+            </div>
+            <div><div class="profile-detail-label">Specialty</div><div class="profile-detail-value">Digital Marketing & Web</div></div>
+          </div>
+        </div>
+        <div class="profile-card-foot">
+          <a href="contact.html" class="btn btn-green" style="width:100%;justify-content:center;">Work With Samuel</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="profile-story reveal-right">
+      <div class="eyebrow">The Story</div>
+      <h2>Why I Started<br>Gaskey Solutions</h2>
+      <p>I'm Samuel Gaskey — an 18-year-old Marketing Arts student who got tired of watching small businesses get ripped off by agencies charging thousands of dollars for results they could get for a fraction of the price.</p>
+      <p>I started Gaskey Solutions because I know the tools. I understand the platforms. And I saw an opportunity to <strong>do it better, faster, and cheaper</strong> than the bloated agencies that dominate the market.</p>
+      <p>Every project I take on gets my full personal attention — no account managers passing messages, no junior designers making decisions. You work directly with me, and I work directly on your brand.</p>
+      <p>My background in Marketing Arts gives me a foundation in strategy, consumer psychology, and brand storytelling. But it's the hands-on work — building sites, running campaigns, analyzing data — that gives me an edge.</p>
+
+      <div class="values">
+        <h3>What I Stand For</h3>
+        <div class="value-item">
+          <div class="value-num">01</div>
+          <div>
+            <h4>Transparency First</h4>
+            <p>You'll always know what I'm building, why I'm building it, and what it costs. No surprises, ever.</p>
+          </div>
+        </div>
+        <div class="value-item">
+          <div class="value-num">02</div>
+          <div>
+            <h4>Results Over Reports</h4>
+            <p>Pretty dashboards don't pay your bills. I focus on outcomes that move the needle — leads, sales, growth.</p>
+          </div>
+        </div>
+        <div class="value-item">
+          <div class="value-num">03</div>
+          <div>
+            <h4>Every Brand Deserves More</h4>
+            <p>Professional marketing shouldn't be reserved for big-budget companies. My mission is to level the playing field.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MISSION QUOTE -->
+<section class="mission">
+  <div class="mission-glow"></div>
+  <div class="reveal">
+    <blockquote>Every brand has a story worth telling. My job is to make sure the right people hear it.</blockquote>
+    <div class="mission-sig">— Samuel Gaskey, Founder</div>
+  </div>
+  <a href="contact.html" class="btn btn-outline-white" style="margin-top:48px; position:relative; z-index:1;">Start Your Story</a>
+</section>
+
+
+<footer>
+  <div class="footer-grid">
+    <div>
+      <a class="nav-logo" href="index.html" style="text-decoration:none;display:inline-flex;align-items:center;gap:12px;margin-bottom:4px;">
+        <svg width="28" height="36" viewBox="0 0 60 64" fill="none">
+          <rect fill="#5cbf5c" x="4" y="44" width="10" height="16" rx="1.5"/>
+          <rect fill="#5cbf5c" x="20" y="30" width="10" height="30" rx="1.5"/>
+          <rect fill="#5cbf5c" x="36" y="16" width="10" height="44" rx="1.5"/>
+        </svg>
+        <div class="nav-logo-text">
+          <span class="nav-brand">Gaskey</span>
+          <span class="nav-tagline">Solutions</span>
+        </div>
+      </a>
+      <p class="footer-brand-desc">Professional websites and social media marketing at competitive rates. We grow your brand.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="services.html">Website Design</a></li>
+        <li><a href="services.html">Web Hosting</a></li>
+        <li><a href="social.html">Social Media Ads</a></li>
+        <li><a href="services.html">Brand Strategy</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Platforms</h4>
+      <ul>
+        <li><a href="social.html">Google Ads</a></li>
+        <li><a href="social.html">Meta Ads</a></li>
+        <li><a href="social.html">YouTube Ads</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="pricing.html">Pricing</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2025 Gaskey Solutions. All rights reserved.</span>
+    <a href="mailto:hello@gaskeysolutions.com" class="footer-email">hello@gaskeysolutions.com</a>
+  </div>
+</footer>
+<script>// ── CURSOR ──
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+function animCursor() {
+  if (cursor) { cursor.style.transform = `translate(${mx - 6}px, ${my - 6}px)`; }
+  rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+  if (ring) { ring.style.transform = `translate(${rx - 18}px, ${ry - 18}px)`; }
+  requestAnimationFrame(animCursor);
+}
+animCursor();
+document.querySelectorAll('a, button').forEach(el => {
+  el.addEventListener('mouseenter', () => { if(cursor){cursor.style.transform += ' scale(2.5)'; cursor.style.background='var(--g300)';} if(ring){ring.style.opacity='0';} });
+  el.addEventListener('mouseleave', () => { if(cursor){cursor.style.background='var(--g400)';} if(ring){ring.style.opacity='0.5';} });
+});
+
+// ── NAV SCROLL ──
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav && (window.scrollY > 40 ? nav.classList.add('scrolled') : nav.classList.remove('scrolled'));
+});
+
+// ── MOBILE MENU ──
+const burger = document.getElementById('burger');
+const mobileMenu = document.getElementById('mobile-menu');
+if (burger && mobileMenu) {
+  burger.addEventListener('click', () => {
+    mobileMenu.classList.toggle('open');
+    document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+  });
+  mobileMenu.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      mobileMenu.classList.remove('open');
+      document.body.style.overflow = '';
+    });
+  });
+}
+
+// ── SCROLL REVEAL ──
+const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      const delay = entry.target.dataset.delay || 0;
+      setTimeout(() => entry.target.classList.add('visible'), delay);
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+revealEls.forEach(el => observer.observe(el));
+
+// ── STAGGER CHILDREN ──
+document.querySelectorAll('[data-stagger]').forEach(parent => {
+  parent.querySelectorAll(':scope > *').forEach((child, i) => {
+    child.classList.add('reveal');
+    child.dataset.delay = i * 100;
+    observer.observe(child);
+  });
+});
+
+// ── COUNT UP ANIMATION ──
+function countUp(el) {
+  const target = parseFloat(el.dataset.count);
+  const suffix = el.dataset.suffix || '';
+  const prefix = el.dataset.prefix || '';
+  const duration = 1600;
+  const start = performance.now();
+  function step(now) {
+    const p = Math.min((now - start) / duration, 1);
+    const ease = 1 - Math.pow(1 - p, 3);
+    const val = target < 10 ? (ease * target).toFixed(1) : Math.round(ease * target);
+    el.textContent = prefix + val + suffix;
+    if (p < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+const countObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { countUp(e.target); countObserver.unobserve(e.target); } });
+}, { threshold: 0.5 });
+document.querySelectorAll('[data-count]').forEach(el => countObserver.observe(el));
+
+// ── ACTIVE NAV ──
+const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+document.querySelectorAll('.nav-links a').forEach(a => {
+  const href = a.getAttribute('href');
+  if (href === currentPage || (currentPage === '' && href === 'index.html')) a.classList.add('active');
+});
+</script>
+</body>
+</html>
