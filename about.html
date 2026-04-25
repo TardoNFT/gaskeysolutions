@@ -3,7 +3,43 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>About — Gaskey Solutions</title>
+<title>About Samuel Gaskey — Founder | Gaskey Solutions</title>
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Meet Samuel Gaskey, founder of Gaskey Solutions. An 18-year-old Marketing Arts major delivering professional digital marketing at competitive prices.">
+  <meta name="keywords" content="Samuel Gaskey, Gaskey Solutions founder, young entrepreneur, marketing student, digital marketing">
+  <meta name="author" content="Samuel Gaskey">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://gaskeysolutions.com/about.html">
+
+  <!-- Open Graph (Facebook/LinkedIn previews) -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="About Samuel Gaskey — Founder | Gaskey Solutions">
+  <meta property="og:description" content="Meet Samuel Gaskey, founder of Gaskey Solutions. An 18-year-old Marketing Arts major delivering professional digital marketing at competitive prices.">
+  <meta property="og:url" content="https://gaskeysolutions.com/about.html">
+  <meta property="og:site_name" content="Gaskey Solutions">
+  <meta property="og:image" content="https://gaskeysolutions.com/og-image.png">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="About Samuel Gaskey — Founder | Gaskey Solutions">
+  <meta name="twitter:description" content="Meet Samuel Gaskey, founder of Gaskey Solutions. An 18-year-old Marketing Arts major delivering professional digital marketing at competitive prices.">
+  <meta name="twitter:image" content="https://gaskeysolutions.com/og-image.png">
+
+  <!-- Schema.org Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "Gaskey Solutions",
+    "url": "https://gaskeysolutions.com",
+    "description": "Professional websites and social media marketing at competitive prices.",
+    "founder": { "@type": "Person", "name": "Samuel Gaskey" },
+    "email": "Sam.gaskey@gmail.com",
+    "sameAs": ["https://www.linkedin.com/in/samgaskey/"],
+    "serviceArea": "Worldwide",
+    "priceRange": "$$"
+  }
+  </script>
 <style>@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&family=DM+Serif+Display:ital@0;1&display=swap');
 
 :root {
@@ -38,28 +74,15 @@ body {
 
 /* ── CUSTOM CURSOR ── */
 #cursor {
-  width: 12px; height: 12px;
+  width: 8px; height: 8px;
   background: var(--g400);
   border-radius: 50%;
-  position: fixed; top: 0; left: 0;
+  position: fixed;
   pointer-events: none;
   z-index: 9999;
-  transition: transform 0.15s ease, width 0.2s, height 0.2s, background 0.2s;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
+  transition: width 0.15s ease, height 0.15s ease, background 0.15s ease, opacity 0.15s ease;
 }
-#cursor-ring {
-  width: 36px; height: 36px;
-  border: 1.5px solid var(--g400);
-  border-radius: 50%;
-  position: fixed; top: 0; left: 0;
-  pointer-events: none;
-  z-index: 9998;
-  transition: transform 0.35s ease, width 0.2s, height 0.2s, opacity 0.2s;
-  transform: translate(-50%,-50%);
-  opacity: 0.5;
-}
-body:hover #cursor { opacity: 1; }
-a:hover ~ #cursor, button:hover ~ #cursor { transform: translate(-50%,-50%) scale(2.5); }
 
 /* ── NAV ── */
 #nav {
@@ -299,7 +322,6 @@ footer {
 <body>
 
 <div id="cursor"></div>
-<div id="cursor-ring"></div>
 <nav id="nav">
   <a class="nav-logo" href="index.html">
     <svg class="logo-svg" width="32" height="42" viewBox="0 0 60 64" fill="none">
@@ -373,8 +395,12 @@ footer {
             <div><div class="profile-detail-label">Specialty</div><div class="profile-detail-value">Digital Marketing & Web</div></div>
           </div>
         </div>
-        <div class="profile-card-foot">
+        <div class="profile-card-foot" style="display:flex;flex-direction:column;gap:10px;">
           <a href="contact.html" class="btn btn-green" style="width:100%;justify-content:center;">Work With Samuel</a>
+          <a href="https://www.linkedin.com/in/samgaskey/" target="_blank" rel="noopener" class="btn btn-outline-green" style="width:100%;justify-content:center;gap:8px;">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.3" fill="none"/><path d="M4 6.5V12" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="4" cy="4.5" r="0.8" fill="currentColor"/><path d="M7.5 12V9c0-1.5 1-2.5 2.5-2.5S12 7.5 12 9v3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+            Connect on LinkedIn
+          </a>
         </div>
       </div>
     </div>
@@ -469,25 +495,27 @@ footer {
     </div>
   </div>
   <div class="footer-bottom">
-    <span class="footer-copy">© 2025 Gaskey Solutions. All rights reserved.</span>
-    <a href="mailto:hello@gaskeysolutions.com" class="footer-email">hello@gaskeysolutions.com</a>
+    <span class="footer-copy">&copy; 2025 Gaskey Solutions. All rights reserved.</span>
+    <div style="display:flex;align-items:center;gap:24px;">
+      <a href="https://www.linkedin.com/in/samgaskey/" target="_blank" rel="noopener" class="footer-email" style="display:inline-flex;align-items:center;gap:8px;">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.3" fill="none"/><path d="M4 6.5V12" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="4" cy="4.5" r="0.8" fill="currentColor"/><path d="M7.5 12V9c0-1.5 1-2.5 2.5-2.5S12 7.5 12 9v3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        LinkedIn
+      </a>
+      <a href="mailto:Sam.gaskey@gmail.com" class="footer-email">Sam.gaskey@gmail.com</a>
+    </div>
   </div>
 </footer>
 <script>// ── CURSOR ──
 const cursor = document.getElementById('cursor');
-const ring = document.getElementById('cursor-ring');
-let mx = 0, my = 0, rx = 0, ry = 0;
-document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
-function animCursor() {
-  if (cursor) { cursor.style.transform = `translate(${mx - 6}px, ${my - 6}px)`; }
-  rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
-  if (ring) { ring.style.transform = `translate(${rx - 18}px, ${ry - 18}px)`; }
-  requestAnimationFrame(animCursor);
-}
-animCursor();
+document.addEventListener('mousemove', e => {
+  if (cursor) {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top  = e.clientY + 'px';
+  }
+});
 document.querySelectorAll('a, button').forEach(el => {
-  el.addEventListener('mouseenter', () => { if(cursor){cursor.style.transform += ' scale(2.5)'; cursor.style.background='var(--g300)';} if(ring){ring.style.opacity='0';} });
-  el.addEventListener('mouseleave', () => { if(cursor){cursor.style.background='var(--g400)';} if(ring){ring.style.opacity='0.5';} });
+  el.addEventListener('mouseenter', () => { if(cursor){ cursor.style.width='18px'; cursor.style.height='18px'; cursor.style.background='var(--g300)'; cursor.style.opacity='0.7'; } });
+  el.addEventListener('mouseleave', () => { if(cursor){ cursor.style.width='8px'; cursor.style.height='8px'; cursor.style.background='var(--g400)'; cursor.style.opacity='1'; } });
 });
 
 // ── NAV SCROLL ──
