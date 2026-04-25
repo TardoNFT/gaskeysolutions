@@ -40,7 +40,7 @@
     "url": "https://gaskeysolutions.com",
     "description": "Professional websites and social media marketing at competitive prices.",
     "founder": { "@type": "Person", "name": "Samuel Gaskey" },
-    "email": "Sam.gaskey@gmail.com",
+    "email": "contact@gaskeysolutions.com",
     "sameAs": ["https://www.linkedin.com/in/samgaskey/"],
     "serviceArea": "Worldwide",
     "priceRange": "$$"
@@ -382,7 +382,7 @@ footer {
           <div class="contact-info-icon">
             <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M2 4h14v10a2 2 0 01-2 2H4a2 2 0 01-2-2V4z" stroke="var(--g400)" stroke-width="1.5" fill="none"/><path d="M2 4l7 6 7-6" stroke="var(--g400)" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
           </div>
-          <div><div class="contact-info-label">Email</div><div class="contact-info-value"><a href="mailto:hello@gaskeysolutions.com">hello@gaskeysolutions.com</a></div></div>
+          <div><div class="contact-info-label">Email</div><div class="contact-info-value"><a href="mailto:contact@gaskeysolutions.com">contact@gaskeysolutions.com</a></div></div>
         </div>
         <div class="contact-info-item">
           <div class="contact-info-icon">
@@ -408,7 +408,10 @@ footer {
       <p>Fill out the form and I'll reach out with a custom proposal — no commitment required.</p>
     </div>
 
-    <form id="contact-form" class="reveal" data-delay="100" onsubmit="submitForm(event)">
+    <form id="contact-form" class="reveal" data-delay="100" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" onsubmit="submitForm(event)">
+      <input type="hidden" name="_replyto" value="contact@gaskeysolutions.com">
+      <input type="hidden" name="_subject" value="New Inquiry — Gaskey Solutions">
+      <input type="hidden" name="_to" value="contact@gaskeysolutions.com">
       <div class="form-row">
         <div class="form-group">
           <label for="fname">First Name</label>
@@ -516,7 +519,7 @@ footer {
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.3" fill="none"/><path d="M4 6.5V12" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="4" cy="4.5" r="0.8" fill="currentColor"/><path d="M7.5 12V9c0-1.5 1-2.5 2.5-2.5S12 7.5 12 9v3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
         LinkedIn
       </a>
-      <a href="mailto:Sam.gaskey@gmail.com" class="footer-email">Sam.gaskey@gmail.com</a>
+      <a href="mailto:contact@gaskeysolutions.com" class="footer-email">contact@gaskeysolutions.com</a>
     </div>
   </div>
 </footer>
@@ -606,20 +609,43 @@ document.querySelectorAll('.nav-links a').forEach(a => {
 });
 </script>
 <script>
-function submitForm(e) {
+async function submitForm(e) {
   e.preventDefault();
   const form = document.getElementById('contact-form');
   const success = document.getElementById('form-success');
-  form.style.opacity = '0';
-  form.style.transform = 'translateY(20px)';
-  form.style.transition = 'all 0.4s ease';
-  setTimeout(() => {
-    form.style.display = 'none';
-    success.style.display = 'block';
-    success.style.opacity = '0';
-    success.style.animation = 'none';
-    setTimeout(() => { success.style.opacity = '1'; success.style.transition = 'opacity 0.4s ease'; }, 50);
-  }, 400);
+  const btn = form.querySelector('.submit-btn');
+  btn.textContent = 'Sending...';
+  btn.style.opacity = '0.7';
+  btn.disabled = true;
+
+  try {
+    const data = new FormData(form);
+    const response = await fetch(form.action, {
+      method: 'POST',
+      body: data,
+      headers: { 'Accept': 'application/json' }
+    });
+
+    if (response.ok) {
+      form.style.opacity = '0';
+      form.style.transform = 'translateY(20px)';
+      form.style.transition = 'all 0.4s ease';
+      setTimeout(() => {
+        form.style.display = 'none';
+        success.style.display = 'block';
+        success.style.opacity = '0';
+        setTimeout(() => { success.style.opacity = '1'; success.style.transition = 'opacity 0.4s ease'; }, 50);
+      }, 400);
+    } else {
+      btn.textContent = 'Something went wrong — try emailing directly';
+      btn.style.opacity = '1';
+      btn.disabled = false;
+    }
+  } catch(err) {
+    btn.textContent = 'Error — please email contact@gaskeysolutions.com';
+    btn.style.opacity = '1';
+    btn.disabled = false;
+  }
 }
 </script>
 </body>

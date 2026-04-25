@@ -40,7 +40,7 @@
     "url": "https://gaskeysolutions.com",
     "description": "Professional websites and social media marketing at competitive prices.",
     "founder": { "@type": "Person", "name": "Samuel Gaskey" },
-    "email": "Sam.gaskey@gmail.com",
+    "email": "contact@gaskeysolutions.com",
     "sameAs": ["https://www.linkedin.com/in/samgaskey/"],
     "serviceArea": "Worldwide",
     "priceRange": "$$"
@@ -362,6 +362,47 @@ footer {
 @media (max-width: 600px) {
   .addons-grid { grid-template-columns: 1fr; }
 }
+
+/* ── NEW PRICING LAYOUT ── */
+.pricing-hero {
+  text-align: center; max-width: 680px; margin: 0 auto 80px;
+}
+.pricing-hero h2 {
+  font-family: 'Bebas Neue', sans-serif; font-size: clamp(52px, 6vw, 76px);
+  letter-spacing: 2px; line-height: 1; margin-bottom: 24px;
+}
+.pricing-hero h2 em { color: var(--g600); font-style: normal; }
+.pricing-hero p { font-size: 17px; line-height: 1.9; color: var(--muted); }
+
+.pricing-pillars {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 64px;
+}
+.pillar {
+  background: var(--white); border: 1px solid var(--border); border-radius: 6px;
+  padding: 40px 32px; transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+}
+.pillar:hover { transform: translateY(-5px); box-shadow: var(--shadow); border-color: var(--g400); }
+.pillar-icon {
+  width: 56px; height: 56px; background: var(--g100); border-radius: 12px;
+  display: flex; align-items: center; justify-content: center; margin-bottom: 20px;
+}
+.pillar h3 { font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 2px; margin-bottom: 12px; }
+.pillar p { font-size: 14px; line-height: 1.8; color: var(--muted); }
+
+.pricing-cta-band {
+  background: var(--g900); border-radius: 8px; padding: 48px 56px;
+  display: flex; align-items: center; justify-content: space-between; gap: 48px; flex-wrap: wrap;
+}
+.pricing-cta-band-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--g400); margin-bottom: 10px;
+}
+.pricing-cta-band-text { font-size: 16px; line-height: 1.7; color: rgba(255,255,255,0.6); max-width: 480px; }
+
+@media (max-width: 900px) {
+  .pricing-pillars { grid-template-columns: 1fr; }
+  .pricing-cta-band { padding: 36px 28px; flex-direction: column; align-items: flex-start; }
+}
 </style>
 </head>
 <body>
@@ -412,95 +453,56 @@ footer {
 
 <section class="pricing-section">
   <div class="pricing-inner">
-    <div class="pricing-header reveal">
-      <div class="eyebrow" style="justify-content:center;">Choose a Plan</div>
-      <h2>Simple Pricing That Scales</h2>
-      <p>Start small and grow. Every plan includes hands-on support from Samuel directly.</p>
+
+    <div class="pricing-hero reveal">
+      <div class="eyebrow" style="justify-content:center;">Pricing</div>
+      <h2>Built Around<br><em>Your Budget</em></h2>
+      <p>No rigid packages. No surprise fees. Every client is different — so every quote is too. We sit down, understand exactly what your brand needs, and build a plan that delivers maximum results for what makes sense for you.</p>
+      <a href="contact.html" class="btn btn-green btn-arrow" style="margin-top:40px;">Get Your Custom Quote</a>
     </div>
-    <div class="pricing-grid" data-stagger>
 
-      <div class="price-card">
-        <div class="price-tier">Starter</div>
-        <div class="price-amount">$299</div>
-        <div class="price-period">one-time website build</div>
-        <div class="price-divider"></div>
-        <ul class="price-features">
-          <li><div class="price-check"></div>Up to 5 pages, custom designed</li>
-          <li><div class="price-check"></div>Mobile responsive on all devices</li>
-          <li><div class="price-check"></div>Contact form included</li>
-          <li><div class="price-check"></div>Basic SEO setup</li>
-          <li><div class="price-check"></div>2 rounds of revisions</li>
-          <li><div class="price-check"></div>48-hour delivery target</li>
-        </ul>
-        <a href="contact.html" class="btn-price">Get Started</a>
+    <div class="pricing-pillars reveal" data-delay="150">
+      <div class="pillar">
+        <div class="pillar-icon">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+            <path d="M16 4L4 10v6c0 7.18 5.16 13.89 12 15.5C22.84 29.89 28 23.18 28 16v-6L16 4z" stroke="var(--g600)" stroke-width="1.5" fill="none" stroke-linejoin="round"/>
+            <path d="M11 16l3 3 7-7" stroke="var(--g600)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h3>No Hidden Fees</h3>
+        <p>What we quote is what you pay. Full transparency from the first conversation to the final invoice.</p>
       </div>
-
-      <div class="price-card featured">
-        <div class="price-badge">Most Popular</div>
-        <div class="price-tier">Growth</div>
-        <div class="price-amount">$599</div>
-        <div class="price-period">website + 1 month ad campaign</div>
-        <div class="price-divider"></div>
-        <ul class="price-features">
-          <li><div class="price-check"></div>Up to 10 pages, fully custom</li>
-          <li><div class="price-check"></div>Google or Meta ad campaign setup</li>
-          <li><div class="price-check"></div>Audience research & targeting</li>
-          <li><div class="price-check"></div>Monthly performance report</li>
-          <li><div class="price-check"></div>3 rounds of revisions</li>
-          <li><div class="price-check"></div>Priority support included</li>
-        </ul>
-        <a href="contact.html" class="btn-price">Get Started</a>
+      <div class="pillar">
+        <div class="pillar-icon">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+            <circle cx="16" cy="16" r="12" stroke="var(--g600)" stroke-width="1.5" fill="none"/>
+            <path d="M16 10v6l4 4" stroke="var(--g600)" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3>Fast Turnaround</h3>
+        <p>We move quickly without cutting corners. Most projects are scoped, priced, and started within 48 hours.</p>
       </div>
-
-      <div class="price-card">
-        <div class="price-tier">Full Scale</div>
-        <div class="price-amount">Custom</div>
-        <div class="price-period">tailored to your brand</div>
-        <div class="price-divider"></div>
-        <ul class="price-features">
-          <li><div class="price-check"></div>Full website build, unlimited pages</li>
-          <li><div class="price-check"></div>All 3 ad platforms managed</li>
-          <li><div class="price-check"></div>Full brand strategy included</li>
-          <li><div class="price-check"></div>Weekly performance reports</li>
-          <li><div class="price-check"></div>Ongoing content support</li>
-          <li><div class="price-check"></div>Dedicated account management</li>
-        </ul>
-        <a href="contact.html" class="btn-price">Let's Talk</a>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- ADD-ONS -->
-<section class="addons">
-  <div class="addons-inner">
-    <div class="reveal">
-      <div class="eyebrow">Add-Ons</div>
-      <h2 class="display-title" style="font-size:48px;">Need Something Extra?</h2>
-    </div>
-    <div class="addons-grid" data-stagger>
-      <div class="addon-card">
-        <div class="addon-price">+$49/mo</div>
-        <div class="addon-name">Website Hosting & Maintenance</div>
-        <div class="addon-desc">We keep your site live, secure, and updated every month.</div>
-      </div>
-      <div class="addon-card">
-        <div class="addon-price">+$99</div>
-        <div class="addon-name">Extra Ad Platform</div>
-        <div class="addon-desc">Add a second or third platform to your existing campaign.</div>
-      </div>
-      <div class="addon-card">
-        <div class="addon-price">+$79</div>
-        <div class="addon-name">Additional Pages</div>
-        <div class="addon-desc">Need more pages after launch? We'll build them out cleanly.</div>
-      </div>
-      <div class="addon-card">
-        <div class="addon-price">+$149</div>
-        <div class="addon-name">Monthly Ad Management</div>
-        <div class="addon-desc">Ongoing optimization and reporting for your active campaigns.</div>
+      <div class="pillar">
+        <div class="pillar-icon">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+            <rect x="4" y="20" width="6" height="8" rx="2" fill="var(--g600)" fill-opacity="0.2" stroke="var(--g600)" stroke-width="1.5"/>
+            <rect x="13" y="13" width="6" height="15" rx="2" fill="var(--g600)" fill-opacity="0.2" stroke="var(--g600)" stroke-width="1.5"/>
+            <rect x="22" y="6" width="6" height="22" rx="2" fill="var(--g600)" fill-opacity="0.2" stroke="var(--g600)" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <h3>Scales With You</h3>
+        <p>Whether you need a simple site or a full multi-platform ad strategy, we scope it to exactly where you are right now.</p>
       </div>
     </div>
+
+    <div class="pricing-cta-band reveal" data-delay="250">
+      <div class="pricing-cta-band-left">
+        <div class="pricing-cta-band-label">Ready to talk numbers?</div>
+        <div class="pricing-cta-band-text">Tell us about your project and we'll come back with a clear, honest price — no obligation, no sales pitch.</div>
+      </div>
+      <a href="contact.html" class="btn btn-green btn-arrow">Start the Conversation</a>
+    </div>
+
   </div>
 </section>
 
@@ -599,7 +601,7 @@ footer {
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.3" fill="none"/><path d="M4 6.5V12" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="4" cy="4.5" r="0.8" fill="currentColor"/><path d="M7.5 12V9c0-1.5 1-2.5 2.5-2.5S12 7.5 12 9v3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
         LinkedIn
       </a>
-      <a href="mailto:Sam.gaskey@gmail.com" class="footer-email">Sam.gaskey@gmail.com</a>
+      <a href="mailto:contact@gaskeysolutions.com" class="footer-email">contact@gaskeysolutions.com</a>
     </div>
   </div>
 </footer>
