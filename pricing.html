@@ -506,50 +506,7 @@ footer {
   </div>
 </section>
 
-<!-- FAQ -->
-<section class="faq">
-  <div class="faq-inner">
-    <div class="reveal" style="margin-bottom:56px;">
-      <div class="eyebrow eyebrow-white">FAQ</div>
-      <h2 class="display-title" style="color:var(--white);font-size:52px;">Common Questions</h2>
-    </div>
-    <div class="faq-item reveal">
-      <button class="faq-question" onclick="toggleFaq(this)">
-        How long does it take to build my website?
-        <div class="faq-icon"></div>
-      </button>
-      <div class="faq-answer">Most websites are delivered within 48–72 hours for a first draft. After revisions and final approval, the full process typically takes 5–10 business days from kickoff to launch.</div>
-    </div>
-    <div class="faq-item reveal">
-      <button class="faq-question" onclick="toggleFaq(this)">
-        Do I need to provide content and photos?
-        <div class="faq-icon"></div>
-      </button>
-      <div class="faq-answer">We can work with content you provide or help write copy for your site. For photos, we can use high-quality stock imagery that fits your brand while your own photos are being gathered.</div>
-    </div>
-    <div class="faq-item reveal">
-      <button class="faq-question" onclick="toggleFaq(this)">
-        How much should I budget for ad spend?
-        <div class="faq-icon"></div>
-      </button>
-      <div class="faq-answer">Ad spend is separate from our management fee. We recommend starting with at least $200–$300/month in ad budget to get meaningful data. We'll help you allocate it efficiently across platforms.</div>
-    </div>
-    <div class="faq-item reveal">
-      <button class="faq-question" onclick="toggleFaq(this)">
-        Can I upgrade my plan later?
-        <div class="faq-icon"></div>
-      </button>
-      <div class="faq-answer">Absolutely. We build with growth in mind. You can start with a Starter website and add ad management, extra pages, or full platform coverage at any point.</div>
-    </div>
-    <div class="faq-item reveal">
-      <button class="faq-question" onclick="toggleFaq(this)">
-        Who will I be working with?
-        <div class="faq-icon"></div>
-      </button>
-      <div class="faq-answer">You work directly with Sam Gaskey — no account reps, no middlemen. Every project gets personal attention from the person who built the business.</div>
-    </div>
-  </div>
-</section>
+
 
 
 <footer>
@@ -690,13 +647,6 @@ document.querySelectorAll('.nav-links a').forEach(a => {
   if (href === currentPage || (currentPage === '' && href === 'index.html')) a.classList.add('active');
 });
 </script>
-<script>
-function toggleFaq(btn) {
-  const item = btn.closest('.faq-item');
-  const isOpen = item.classList.contains('open');
-  document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
-  if (!isOpen) item.classList.add('open');
-}
-</script>
+
 </body>
 </html>
